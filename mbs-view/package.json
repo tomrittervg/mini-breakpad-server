@@ -1,9 +1,9 @@
 {
-  "name": "mini-breakpad-server",
+  "name": "mbs-view",
   "description": "Minimum breakpad crash reports collecting server",
   "version": "0.2.0",
   "bin": {
-    "mini-breakpad-server": "bin/mini-breakpad-server"
+    "mbs-view": "../../bin/mbs-view"
   },
   "scripts": {
     "prepublish": "grunt coffee",

@@ -2,13 +2,10 @@ bodyParser = require 'body-parser'
 methodOverride = require('method-override')
 path = require 'path'
 express = require 'express'
-reader = require './reader'
 saver = require './saver'
 Database = require './database'
-WebHook = require './webhook'
 
 app = express()
-webhook = new WebHook
 
 db = new Database
 db.on 'load', ->
@@ -23,12 +20,6 @@ app.use bodyParser.urlencoded({extended: true})
 app.use methodOverride()
 app.use (err, req, res, next) ->
   res.send 500, "Bad things happened:<br/> #{err.message}"
-
-app.post '/webhook', (req, res, next) ->
-  webhook.onRequest req
-
-  console.log 'webhook requested', req.body.repository.full_name
-  res.end()
 
 app.post '/post', (req, res, next) ->
   saver.saveRequest req, db, (err, filename) ->
@@ -45,13 +36,4 @@ root =
     ''
 
 app.get "/#{root}", (req, res, next) ->
-  res.render 'index', title: 'Crash Reports', records: db.getAllRecords()
-
-app.get "/#{root}view/:id", (req, res, next) ->
-  db.restoreRecord req.params.id, (err, record) ->
-    return next err if err?
-
-    reader.getStackTraceFromRecord record, (err, report) ->
-      return next err if err?
-      fields = record.fields
-      res.render 'view', {title: 'Crash Report', report, fields}
+  res.render 'index', title: 'Crash Reports Submitter', records: db.getAllRecords()
