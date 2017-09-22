@@ -9,7 +9,7 @@ app = express()
 
 db = new Database
 db.on 'load', ->
-  port = process.env.MINI_BREAKPAD_SERVER_PORT ? 1127
+  port = process.env.MINI_BREAKPAD_SERVER_PORT ? 6000
   app.listen port
   console.log "Listening on port #{port}"
 
